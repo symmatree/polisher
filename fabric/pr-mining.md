@@ -19,8 +19,9 @@ marking up the summary with human-provided ansers or clarifications, then iterat
   Also output a REQUESTS.md document with a bulleted list of information you
   don't have that would be helpful (whether documentation, the configuration of
   neighboring systems, or user intent). The model should limit its imagination
-  here and only use clearly inferrable user intent; otherwise ask for the motivation
-  or reasoning behind a change.
+  here and only cite clearly inferrable user intent (from comments in the code,
+  variable names, or obvious intent of the change); otherwise it can just describe
+  the nature of the change for later analysis.
 * review the overall list of annotated changes and propose any packages or concepts
   that seem to be logically missing, and add them to PROPOSALS.md. In particular
   this includes cross-cutting concepts (hypothetically if every new package had
@@ -38,9 +39,14 @@ So far that's just grooming the static knowledge base with connectivity
 and interaction information. But then we look at building out the stories:
 
 * For each software system or concept, collect its changes into one or more
-  bugs and features, taking advantage of hindsight to understand where an
+  bugs and features (preferring existing ones but adding new as needed),
+  taking advantage of hindsight to understand where an
   initial fix was actually incomplete or confidently wrong, or where a feature
-  led to secondary fixes before stabilizing.
+  led to secondary fixes before stabilizing. This is where we try to discover
+  user intent, with the longitudinal view of the collected changes (in our
+  time window) to the system. The system should make an intelligent guess
+  at user intent based on the series of observed changes, and allow the
+  user to update this description as feedback in the next iteration.
 * For each of these bugs or features, write a brief but technical summary
   of the set of changes involved. Identify 1-3 lessons learned from each
   of these, including things that worked as advertised, but especially
