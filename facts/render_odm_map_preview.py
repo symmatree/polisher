@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """
-Render a small PNG preview of an ODM map: orthophoto as base, boundary = ortho extent.
-Optional: if boundary.geojson (or *.geojson) exists in map dir, overlay it (coordinates
-must be in the same CRS as the ortho, e.g. both UTM).
+Render a small PNG preview of an ODM map: orthophoto as base, boundary overlay when available.
+Boundary: if boundary.geojson/footprint.geojson exists in map root, use it; else use
+odm_georeferencing/odm_georeferenced_model.bounds.geojson (ODM output). Coordinates must
+be in the same CRS as the ortho (e.g. UTM). Falls back to ortho extent if no GeoJSON.
 Usage: polisher/.venv/bin/python facts/render_odm_map_preview.py <map_output_dir> <output_png>
 Requires: rasterio, matplotlib.
 """
@@ -28,11 +29,16 @@ def find_ortho(map_dir: Path) -> Path | None:
 
 
 def find_geojson(map_dir: Path) -> Path | None:
+    # Root: optional user-supplied boundary/footprint
     for name in ("boundary.geojson", "footprint.geojson"):
         if (map_dir / name).exists():
             return map_dir / name
     for p in map_dir.glob("*.geojson"):
         return p
+    # ODM output: bounds in odm_georeferencing (same CRS as ortho)
+    odm_bounds = map_dir / "odm_georeferencing" / "odm_georeferenced_model.bounds.geojson"
+    if odm_bounds.exists():
+        return odm_bounds
     return None
 
 
