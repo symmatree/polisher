@@ -1,0 +1,15 @@
+---
+description: Use only ASCII quotes and apostrophes so edits and search/replace work
+alwaysApply: true
+---
+
+# ASCII quotes and apostrophes only
+
+When writing or editing any file in this repo, use **only** ASCII straight quotes and apostrophes:
+
+- **Double quote:** ASCII 0x22 `"` — never Unicode U+201C or U+201D (curly/smart double quotes).
+- **Apostrophe / single quote:** ASCII 0x27 `'` — never Unicode U+2018 or U+2019 (curly/smart single quotes).
+
+Curly quotes break search/replace and make later edits fail. Do not use them.
+
+**If a replace fails on a file you wrote:** Run the repo's normalizer (e.g. in facts: `polisher/.venv/bin/python polisher/facts/normalize_ascii_quotes.py <repo-path>`), then retry the replace. Do not work around the mismatch with inline scripts.
