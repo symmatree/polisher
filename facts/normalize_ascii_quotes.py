@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """
-Normalize Unicode curly/smart quotes to ASCII in text files:
-  double: U+201C, U+201D -> 0x22 (")
-  single: U+2018, U+2019 -> 0x27 (')
+Normalize Unicode curly/smart quotes and dashes to ASCII in text files:
+  double quote: U+201C, U+201D -> 0x22 (")
+  single quote: U+2018, U+2019 -> 0x27 (')
+  em dash:      U+2014 -> "--"
+  en dash:      U+2013 -> "-"
 Run from polisher with path to the target repo (e.g. Obsidian vault):
   polisher/.venv/bin/python polisher/facts/normalize_ascii_quotes.py /path/to/facts
 Skips .git, .obsidian, node_modules. Reports which files were changed.
-Keeps the target repo 7-bit clean for quotes so tooling works; paste from anywhere is fine.
+Keeps the target repo ASCII for these characters so tooling works; paste from anywhere is fine.
 """
 
 import os
@@ -54,6 +56,8 @@ def main():
                 .replace("\u201d", "\"")
                 .replace("\u2018", "'")
                 .replace("\u2019", "'")
+                .replace("\u2014", "--")   # em dash
+                .replace("\u2013", "-")    # en dash
             )
             if c2 != c:
                 with open(path, "w", encoding="utf-8", newline="\n") as fp:
