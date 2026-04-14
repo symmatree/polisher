@@ -17,6 +17,7 @@ REMOTE_PATH="${REMOTE}:${ROOT}/${BUNDLE}"
 
 mapfile -t SOURCES <<'END_SOURCES'
 Drones/rekon10/arm-pods.md
+Drones/rekon10/canopy-ops.md
 Drones/rekon10/central-hub.md
 Drones/rekon10/flight-platform.md
 Drones/rekon10/gps-mount.md
