@@ -1,2 +1,5 @@
 proxmoxer
 humanize
+Pillow
+rasterio
+matplotlib
