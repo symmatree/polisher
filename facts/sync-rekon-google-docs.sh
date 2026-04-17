@@ -16,15 +16,15 @@ BUNDLE="rekon"
 REMOTE_PATH="${REMOTE}:${ROOT}/${BUNDLE}"
 
 mapfile -t SOURCES <<'END_SOURCES'
-Drones/rekon10/arm-pods.md
-Drones/rekon10/canopy-ops.md
-Drones/rekon10/central-hub.md
-Drones/rekon10/flight-platform.md
-Drones/rekon10/gps-mount.md
-Drones/rekon10/ground-station.md
-Drones/rekon10/oak-d-mount.md
-Drones/rekon10/README.md
-Drones/rekon10/rekon-design.md
+fables/Drones/rekon10/arm-pods.md
+fables/Drones/rekon10/canopy-ops.md
+fables/Drones/rekon10/central-hub.md
+fables/Drones/rekon10/flight-platform.md
+fables/Drones/rekon10/gps-mount.md
+fables/Drones/rekon10/ground-station.md
+fables/Drones/rekon10/oak-d-mount.md
+fables/Drones/rekon10/README.md
+fables/Drones/rekon10/rekon-design.md
 fables/Datasets/experiments-house-model.md
 END_SOURCES
 
