@@ -1,6 +1,6 @@
 # nouns, topic identification
 
-First thought is to do things by path, like 
+First thought is to do things by path, like
 `network-devices / unifi / basement-switch.md` or `software / loki / general-tips.md` but I think that
 conflates things.
 

@@ -12,11 +12,11 @@ def main():
     proxmox_user = os.getenv('PROXMOX_USER', 'root@pam')
     proxmox_password = os.getenv('PROXMOX_PASSWORD', '')
     proxmox_host = os.getenv('PROXMOX_HOST', 'nuc-g3p-1.local.symmatree.com')
-    
+
     if not proxmox_password:
         print("Error: PROXMOX_PASSWORD not set", file=sys.stderr)
         sys.exit(1)
-    
+
     try:
         # Connect to Proxmox with increased timeout
         proxmox = ProxmoxAPI(
@@ -27,26 +27,26 @@ def main():
             port=8006,
             timeout=60
         )
-        
+
         # Get list of nodes
         nodes = proxmox.nodes.get()
-        
+
         # Collect VM data for each node
         vm_data = []
         for node in nodes:
             node_name = node.get('node', '')
-            
+
             # Get VMs for this node with full=1 (boolean parameter)
             try:
                 vms = proxmox.nodes(node_name).qemu.get(full=1)
             except Exception as e:
                 print(f"Error getting VMs for node {node_name}: {e}", file=sys.stderr)
                 continue
-            
+
             for vm in vms:
                 vmid = vm.get('vmid', 0)
                 name = vm.get('name', '')
-                
+
                 # Extract basic fields
                 cpu = vm.get('cpu', 0)
                 cpus = vm.get('cpus', 0)
@@ -54,7 +54,7 @@ def main():
                 maxmem = vm.get('maxmem', 0)
                 uptime = vm.get('uptime', 0)
                 status = vm.get('status', 'unknown')
-                
+
                 # Try to get IP address from agent
                 ip_address = None
                 try:
@@ -81,16 +81,16 @@ def main():
                 except:
                     # Agent not available or failed
                     pass
-                
+
                 # Format values
                 mem_used_str = naturalsize(mem, binary=True) if mem else "0 B"
                 mem_total_str = naturalsize(maxmem, binary=True) if maxmem else "0 B"
                 mem_fraction = (mem / maxmem * 100) if maxmem > 0 else 0
-                
+
                 uptime_days = int(uptime / 86400) if uptime else 0
                 uptime_hours = int((uptime % 86400) / 3600) if uptime else 0
                 uptime_str = f"{uptime_days}d {uptime_hours}h" if uptime else "0d 0h"
-                
+
                 vm_info = {
                     'vmid': vmid,
                     'name': name,
@@ -109,10 +109,10 @@ def main():
                     'ip_address': ip_address
                 }
                 vm_data.append(vm_info)
-        
+
         # Output as JSON to stdout
         print(json.dumps(vm_data, indent=2))
-            
+
     except Exception as e:
         print(f'Error: {e}', file=sys.stderr)
         import traceback
